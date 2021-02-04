@@ -1,0 +1,23 @@
+apiVersion: apps/v1 # for versions before 1.6.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodeinfo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodeinfo
+  template:
+    metadata:
+      labels:
+        app: nodeinfo
+    spec:
+      containers:
+      - name: nodeinfo
+        image: windse/nodeinfo:v1.3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+      imagePullSecrets:
+      - name: admin-registry-secret
