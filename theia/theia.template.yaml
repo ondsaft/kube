@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: theia
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: thei-user
+  namespace: theia
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: thei-user
+  namespace: theia
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: thei-user
+    namespace: theia
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: theia-next
+ namespace: theia
+spec:
+ type: NodePort
+ ports:
+ - port: 3000
+   protocol: TCP
+   targetPort: 3000
+   nodePort: {{port}}
+ selector:
+   app: theia-next
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: theia-next
+  name: theia-next
+  namespace: theia
+spec:
+  selector:
+    matchLabels:
+      app: theia-next
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: theia-next
+    spec:
+      securityContext:
+        runAsUser: {{userid}}
+        runAsGroup: {{groupid}}
+      containers:
+      - image: theiaide/theia:latest
+        imagePullPolicy: Always
+        name: theia-next
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "1000m"
+          limits:
+            memory: "256Mi"
+            cpu: "2000m"
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+          - name: hostvol
+            mountPath: /home/project
+          #- name: configvol
+          #  mountPath: /home/theia
+      volumes:
+        - name: hostvol
+          hostPath:
+           path: /home/sysadmin
+           type: Directory
+        #- name: configvol
+        #  persistentVolumeClaim:
+        #    claimName: pvc-theia
