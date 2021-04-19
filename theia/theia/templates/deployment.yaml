@@ -31,11 +31,11 @@ spec:
             memory: "256Mi"
             cpu: "2000m"
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.service.port  }}
         volumeMounts:
           - name: hostvol
             mountPath: /home/project
       volumes:
         - name: hostvol
           hostPath:
-           path: /home/sysadmin
+           path: {{ .Values.projectdir }}

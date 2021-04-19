@@ -9,6 +9,7 @@ image:
 
 userid: 100
 groupid: 200
+projectdir: /home/sysadmin
 
 service:
   type: NodePort
