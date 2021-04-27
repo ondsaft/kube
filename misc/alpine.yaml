@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine
+  labels:
+    component: alpine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: alpine
+  template:
+    metadata:
+      labels:
+        component: alpine
+    spec:
+      containers:
+      - name: alpine
+        image: alpine
+        command: ["/bin/sh", "-ec", "sleep 1000"]
+        resources:
+          requests:
+              memory: "50Mi"
+              cpu: "50m"
+          limits:
+              memory: "50Mi"
+              cpu: "50m"
