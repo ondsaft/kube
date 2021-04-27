@@ -1,0 +1,30 @@
+# wrlx.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wrlx
+  labels:
+    component: wrlx
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      component: wrlx
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        component: wrlx
+        tier: frontend
+    spec:
+      containers:
+      - name: wrlx
+        image: ondsaft/wrlx-stress-ng:20.33.0
+        command: ["/bin/sh", "-ec", "sleep 1000"]
+        resources:
+          requests:
+              memory: "250Mi"
+              cpu: "50m"
+          limits:
+              memory: "500Mi"
+              cpu: "100m"

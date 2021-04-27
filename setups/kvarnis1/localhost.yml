@@ -1,0 +1,19 @@
+system_mode: simplex
+name: "kvarnis1-2006-sx"
+description: "kvarnis1"
+location: "home"
+contact: "tomas.holmberg@windriver.com"
+external_oam_subnet: 192.168.1.0/24
+external_oam_gateway_address: 192.168.1.1
+external_oam_floating_address: 192.168.1.150
+admin_password: PWDwrs*1
+ansible_become_pass: PWDwrs*1
+docker_registries:
+    defaults:
+        type: aws-ecr
+        username: AKIAZDKOSK7ZMI7MOTDC
+        password: OaWxlwStWMevCuNh+CJ1zLJzUV9O1zXVMtqtPkzP
+additional_local_registry_images:
+  - docker.io/wind-river/cloud-platform-deployment-manager:WRCP_20.06-wrs.2
+  - gcr.io/kubebuilder/kube-rbac-proxy:v0.4.0
+  - docker.io/wind-river/cmk:WRCP.20.01-v1.3.1-15-ge3df769-1
